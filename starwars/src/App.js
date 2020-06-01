@@ -4,7 +4,7 @@ import Axios from 'axios';
 
 const App = () => {
   const [data, setData] = useState(localStorage.getItem("appData") ? JSON.parse(localStorage.getItem("appData")) : null);
-  const [pokemon, setPokemon] = useState(localStorage.getItem("pokemon") ? JSON.parse(localStorage.getItem("pokemon")) : null);
+  const [pokemonData, setPokemonData] = useState(localStorage.getItem("pokemonData") ? JSON.parse(localStorage.getItem("pokemonData")) : null);
 
   // Try to think through what state you'll need for this app before starting. Then build out
   // the state properties here.
@@ -15,7 +15,7 @@ const App = () => {
   const base_url = "https://pokeapi.co/api/v2/";
 
   useEffect(() => {
-    // If our data is in cache
+    // If our data is not in cache
     if(!data){
       Axios.get(`${base_url}version-group/red-blue/`)
          .then((resp) => {
@@ -23,16 +23,20 @@ const App = () => {
 
            // Cache our data in localstorage
            localStorage.setItem("appData", JSON.stringify(resp.data));
-
-           return resp.data;
-         })
-         .then((data) => {
-           // Get the Pokemon for the generation associated with this version group
-           Axios.get(data.generation.url)
-                .then((resp) => {
-                  console.log("from Generation API Call", resp.data);
-                });
          });
+    }
+    else{
+      // If our pokemon data is not in cache
+      if(!pokemonData){
+        // Our data is in cache, use it to make our call to get our list of pokemon
+        Axios.get(data.generation.url)
+             .then((resp) => {
+               console.log("from Generation call", resp.data);
+
+               // Cache our pokemon data in localstorage
+               localStorage.setItem("pokemonData", JSON.stringify(resp.data));
+             });
+      }
     }
   }, []);
 
