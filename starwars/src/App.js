@@ -3,7 +3,8 @@ import './App.css';
 import Axios from 'axios';
 
 const App = () => {
-  const [data, setData] = useState();
+  const [data, setData] = useState(localStorage.getItem("appData") ? JSON.parse(localStorage.getItem("appData")) : null);
+  const [pokemon, setPokemon] = useState(localStorage.getItem("pokemon") ? JSON.parse(localStorage.getItem("pokemon")) : null);
 
   // Try to think through what state you'll need for this app before starting. Then build out
   // the state properties here.
@@ -14,9 +15,14 @@ const App = () => {
   const base_url = "https://pokeapi.co/api/v2/";
 
   useEffect(() => {
-    Axios.get(`${base_url}version-group/red-blue/`)
+    // If our data is in cache
+    if(!data){
+      Axios.get(`${base_url}version-group/red-blue/`)
          .then((resp) => {
-           console.log(resp);
+           console.log("from version group call", resp);
+
+           // Cache our data in localstorage
+           localStorage.setItem("appData", JSON.stringify(resp.data));
 
            return resp.data;
          })
@@ -27,6 +33,7 @@ const App = () => {
                   console.log("from Generation API Call", resp.data);
                 });
          });
+    }
   }, []);
 
   return (
