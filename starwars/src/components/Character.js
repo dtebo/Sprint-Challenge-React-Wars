@@ -1,17 +1,22 @@
 // Write your Character component here
 import React from 'react';
 
-import { Card } from 'reactstrap';
+import { 
+    Card,
+    CardTitle,
+    CardBody,
+    CardText
+} from 'reactstrap';
 
 const Character = (props) => {
     return (
         <Card className="character">
-            <section className="character-header">
-                <h2>{props.species}</h2>
-            </section>
-            <section className="character-info">
-
-            </section>
+            <CardTitle className="character-header">
+                {props.species}
+            </CardTitle>
+            <CardBody className="character-info">
+                <CardText>Moves: {props.moves}</CardText>
+            </CardBody>
         </Card>
     );
 };

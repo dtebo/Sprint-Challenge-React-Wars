@@ -7,7 +7,7 @@ import Page from './components/Page';
 const App = () => {
   const [data, setData] = useState(localStorage.getItem("appData") ? JSON.parse(localStorage.getItem("appData")) : null);
   const [pokemonData, setPokemonData] = useState(localStorage.getItem("pokemonData") ? JSON.parse(localStorage.getItem("pokemonData")) : null);
-
+  
   // Try to think through what state you'll need for this app before starting. Then build out
   // the state properties here.
 
@@ -23,16 +23,20 @@ const App = () => {
          .then((resp) => {
            // Cache our data in localstorage
            localStorage.setItem("appData", JSON.stringify(resp.data));
+
+           setData(resp.data);
          });
     }
     else{
       // If our pokemon data is not in cache
       if(!pokemonData){
         // Our data is in cache, use it to make our call to get our list of pokemon
-        Axios.get(data.generation.url)
+        Axios.get(`${data.generation.url}`)
              .then((resp) => {
                // Cache our pokemon data in localstorage
                localStorage.setItem("pokemonData", JSON.stringify(resp.data));
+
+               setPokemonData(resp.data);
              });
       }
     }
