@@ -2,7 +2,13 @@ import React, {useState, useEffect} from 'react';
 import './App.css';
 import Axios from 'axios';
 
-import Page from './components/Page';
+import {
+  Pagination,
+  PaginationItem,
+  PaginationLink
+} from 'reactstrap';
+
+import Page from './components/Page/Page';
 
 const App = () => {
   const [data, setData] = useState(localStorage.getItem("appData") ? JSON.parse(localStorage.getItem("appData")) : null);
@@ -46,6 +52,50 @@ const App = () => {
     <div className="App">
       <h1 className="Header">Characters</h1>
       <Page pokemon={pokemonData} />
+      <Pagination className="pagination" aria-label="Pagination">
+        <PaginationItem>
+          <PaginationLink first href="#" />
+        </PaginationItem>
+        <PaginationItem>
+          <PaginationLink previous href="#" />
+        </PaginationItem>
+        <PaginationItem>
+          <PaginationLink href="#">
+            1
+          </PaginationLink>
+        </PaginationItem>
+        <PaginationItem>
+          <PaginationLink href="#">
+            2
+          </PaginationLink>
+        </PaginationItem>
+        <PaginationItem>
+          <PaginationLink href="#">
+            3
+          </PaginationLink>
+        </PaginationItem>
+        <PaginationItem>
+          <PaginationLink href="#">
+            4
+          </PaginationLink>
+        </PaginationItem>
+        <PaginationItem>
+          <PaginationLink href="#">
+            5
+          </PaginationLink>
+        </PaginationItem>
+        <PaginationItem>
+          <PaginationLink href="#">
+            6
+          </PaginationLink>
+        </PaginationItem>
+        <PaginationItem>
+          <PaginationLink next href="#" />
+        </PaginationItem>
+        <PaginationItem>
+          <PaginationLink last href="#" />
+        </PaginationItem>
+      </Pagination>
     </div>
   );
 }
