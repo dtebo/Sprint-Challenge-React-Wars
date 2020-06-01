@@ -2,6 +2,8 @@ import React, {useState, useEffect} from 'react';
 import './App.css';
 import Axios from 'axios';
 
+import Page from './components/Page';
+
 const App = () => {
   const [data, setData] = useState(localStorage.getItem("appData") ? JSON.parse(localStorage.getItem("appData")) : null);
   const [pokemonData, setPokemonData] = useState(localStorage.getItem("pokemonData") ? JSON.parse(localStorage.getItem("pokemonData")) : null);
@@ -19,8 +21,6 @@ const App = () => {
     if(!data){
       Axios.get(`${base_url}version-group/red-blue/`)
          .then((resp) => {
-           console.log("from version group call", resp);
-
            // Cache our data in localstorage
            localStorage.setItem("appData", JSON.stringify(resp.data));
          });
@@ -31,18 +31,17 @@ const App = () => {
         // Our data is in cache, use it to make our call to get our list of pokemon
         Axios.get(data.generation.url)
              .then((resp) => {
-               console.log("from Generation call", resp.data);
-
                // Cache our pokemon data in localstorage
                localStorage.setItem("pokemonData", JSON.stringify(resp.data));
              });
       }
     }
-  }, []);
+  }, [data, pokemonData]);
 
   return (
     <div className="App">
       <h1 className="Header">Characters</h1>
+      <Page pokemon={pokemonData} />
     </div>
   );
 }
